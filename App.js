@@ -11,9 +11,6 @@ import MyScreen from './components/AssetExample';
 import TelaMeditacao from './components/TelaMeditacao';
 import TelaDiario from './components/TelaDiario';
 
-
-
-
 Icon.loadFont();
 
 const mainNavigation = createMaterialBottomTabNavigator(
