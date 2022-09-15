@@ -13,6 +13,7 @@ import {
 import { TextInput } from "react-native-paper";
 
 import RobotIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 //uigradients.com
 import bgimg from "../assets/backgroundImages/Telegram.jpg";
@@ -20,6 +21,8 @@ import TelaModal from "./TelaModal";
 
 export default function TelaDiario() {
   const [visivel, setVisivel] = useState(false);
+  const [titulo, setTitulo] = useState("");
+  const [diario, setDiario] = useState("");
   const [popup, setPopup] = useState();
   return (
     <View style={styles.container}>
@@ -32,14 +35,13 @@ export default function TelaDiario() {
           //onPress={() => setPopup(<TelaModal />)}
           onPress={() => setVisivel(true)}
         >
-          <Text style={{ color: "white", fontSize: 14 }}>Novo Diário</Text>
+          <Icon name="plus" size={24} />
         </TouchableOpacity>
 
         <View style={styles.containerImg}>
           <View style={styles.item}>
             <Text>diario1</Text>
           </View>
-
           <View style={styles.item}>
             <Text>diario2</Text>
           </View>
@@ -55,14 +57,35 @@ export default function TelaDiario() {
       </ImageBackground>
       <Modal visible={visivel}>
         <View style={styles.viewModal}>
-          <Text>Modal</Text>
-          <TextInput style={{ borderWidth: 2, borderColor: "black" }} />
-          <Button
-            title="Fechar"
-            onPress={() => {
-              setVisivel(false);
+          <TextInput
+            style={{ fontSize: 28, marginBottom: 15, width: 150 }}
+            placeholder="Titulo"
+            placeholderTextColor="#4da6ff"
+          />
+          <TextInput
+            multiline
+            numberOfLines={4}
+            style={{
+              width: 350,
+              borderColor: "none",
+              flex: 1,
             }}
           />
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginTop: 50,
+            }}
+          >
+            <Button title="Salvar" onPress={() => {}} />
+            <Button
+              title="Cancelar"
+              onPress={() => {
+                setVisivel(false);
+              }}
+            />
+          </View>
         </View>
       </Modal>
       <StatusBar barStyle="light-content" />
@@ -107,31 +130,25 @@ const styles = StyleSheet.create({
   },
   buttonNovo: {
     alignItems: "center",
+    justifyContent: "center",
+    width: 50,
+    height: 50,
     backgroundColor: "#92cbde",
-    padding: 10,
-    borderRadius: 20,
-    marginLeft: 180,
+    borderRadius: 50,
+    marginLeft: 300,
     marginRight: 40,
     marginBottom: 15,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 3.84,
-    elevation: 1,
   },
   icon: {
     color: "#4da6ff",
     fontSize: 24,
     marginVertical: 10,
-    marginLeft: 260,
+    marginLeft: 30,
   },
   viewModal: {
     position: "absolute",
     flex: 1,
     padding: 30,
-    backgroundColor: "lightyellow",
+    backgroundColor: "#92cbde",
   },
 });
