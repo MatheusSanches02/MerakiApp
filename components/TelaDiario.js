@@ -8,7 +8,9 @@ import {
   StatusBar,
   TouchableOpacity,
   Modal,
+  Button,
 } from "react-native";
+import { TextInput } from "react-native-paper";
 
 import RobotIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -16,51 +18,56 @@ import RobotIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import bgimg from "../assets/backgroundImages/Telegram.jpg";
 import TelaModal from "./TelaModal";
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    StatusBar.setBarStyle("light-content");
-    StatusBar.setBackgroundColor("#000");
-  }
-  render() {
-    const [visivel, setVisivel] = useState(false);
-    const [popup, setPopup] = useState();
-    return (
-      <View style={styles.container}>
-        <ImageBackground source={bgimg} style={styles.imgBackground}>
-          <Text style={styles.titulo}> Diário </Text>
+export default function TelaDiario() {
+  const [visivel, setVisivel] = useState(false);
+  const [popup, setPopup] = useState();
+  return (
+    <View style={styles.container}>
+      <ImageBackground source={bgimg} style={styles.imgBackground}>
+        <Text style={styles.titulo}> Diário </Text>
 
-          <TouchableOpacity
-            style={styles.buttonNovo}
-            //onPress={onPressDiario}
-            onPress={() => setPopup(<TelaModal />)}
-          >
-            <Text style={{ color: "white", fontSize: 14 }}>Novo Diário</Text>
-          </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.buttonNovo}
+          //onPress={onPressDiario}
+          //onPress={() => setPopup(<TelaModal />)}
+          onPress={() => setVisivel(true)}
+        >
+          <Text style={{ color: "white", fontSize: 14 }}>Novo Diário</Text>
+        </TouchableOpacity>
 
-          <View style={styles.containerImg}>
-            <View style={styles.item}>
-              <Text>diario1</Text>
-            </View>
-
-            <View style={styles.item}>
-              <Text>diario2</Text>
-            </View>
-
-            <View style={styles.item}>
-              <Text>diario3</Text>
-            </View>
+        <View style={styles.containerImg}>
+          <View style={styles.item}>
+            <Text>diario1</Text>
           </View>
 
-          <TouchableOpacity>
-            <RobotIcon name="robot" style={styles.icon} />
-          </TouchableOpacity>
-        </ImageBackground>
-        {popup}
-        <StatusBar barStyle="light-content" />
-      </View>
-    );
-  }
+          <View style={styles.item}>
+            <Text>diario2</Text>
+          </View>
+
+          <View style={styles.item}>
+            <Text>diario3</Text>
+          </View>
+        </View>
+
+        <TouchableOpacity>
+          <RobotIcon name="robot" style={styles.icon} />
+        </TouchableOpacity>
+      </ImageBackground>
+      <Modal visible={visivel}>
+        <View style={styles.viewModal}>
+          <Text>Modal</Text>
+          <TextInput style={{ borderWidth: 2, borderColor: "black" }} />
+          <Button
+            title="Fechar"
+            onPress={() => {
+              setVisivel(false);
+            }}
+          />
+        </View>
+      </Modal>
+      <StatusBar barStyle="light-content" />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

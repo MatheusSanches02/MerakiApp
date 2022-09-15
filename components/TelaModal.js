@@ -8,6 +8,7 @@ import {
   StatusBar,
   TouchableOpacity,
   Modal,
+  Button,
 } from "react-native";
 
 import RobotIcon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -15,23 +16,24 @@ import RobotIcon from "react-native-vector-icons/MaterialCommunityIcons";
 //uigradients.com
 import bgimg from "../assets/backgroundImages/Telegram.jpg";
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    StatusBar.setBarStyle("light-content");
-    StatusBar.setBackgroundColor("#000");
-  }
-  render() {
-    const [visivel, setVisivel] = useState(false);
-    return (
-      <View style={styles.container}>
-        <ImageBackground source={bgimg} style={styles.imgBackground}>
-          <Text> Diario </Text>
-        </ImageBackground>
-        <StatusBar barStyle="light-content" />
-      </View>
-    );
-  }
+export default function TelaModal({ setPopup }) {
+  //const [popup, setPopup] = useState();
+  const [visivel, setVisivel] = useState(false);
+  return (
+    <View style={styles.container}>
+      
+      <ImageBackground source={bgimg} style={styles.imgBackground}>
+        <Text> Diario </Text>
+        <Button
+          title="Voltar"
+          onPress={() => {
+            setPopup();
+          }}
+        />
+      </ImageBackground>
+      <StatusBar barStyle="light-content" />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

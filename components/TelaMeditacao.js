@@ -21,50 +21,48 @@ import imgFireplace from "../assets/images/fireplace.jpg";
 import imgRain from "../assets/images/rain.jpg";
 import imgStones from "../assets/images/stones.jpg";
 
-export default class TelaPrincipal extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <ImageBackground source={bgimg1} style={styles.imgBackground}>
-          <Text style={styles.titulo}> Meditação </Text>
-          <View style={styles.containerImg}>
-            <View style={styles.imageView}>
-              <TouchableOpacity>
-                <Image source={imgWaves} style={styles.image}></Image>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Image source={imgFireplace} style={styles.image}></Image>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.textView}>
-              <Text style={styles.text1}>Ondas</Text>
-              <Text style={styles.text1}>Lareira</Text>
-            </View>
-
-            <View style={styles.imageView}>
-              <TouchableOpacity>
-                <Image source={imgRain} style={styles.image}></Image>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Image source={imgStones} style={styles.image}></Image>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.textView}>
-              <Text style={styles.text2}>Chuva</Text>
-              <Text style={styles.text2}>Natureza</Text>
-            </View>
+export default function TelaMeditacao() {
+  return (
+    <View style={styles.container}>
+      <ImageBackground source={bgimg1} style={styles.imgBackground}>
+        <Text style={styles.titulo}> Meditação </Text>
+        <View style={styles.containerImg}>
+          <View style={styles.imageView}>
+            <TouchableOpacity>
+              <Image source={imgWaves} style={styles.image}></Image>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Image source={imgFireplace} style={styles.image}></Image>
+            </TouchableOpacity>
           </View>
 
-          <TouchableOpacity>
-            <RobotIcon name="robot" style={styles.icon} />
-          </TouchableOpacity>
-        </ImageBackground>
-        <StatusBar style="default" />
-      </View>
-    );
-  }
+          <View style={styles.textView}>
+            <Text style={styles.text1}>Ondas</Text>
+            <Text style={styles.text1}>Lareira</Text>
+          </View>
+
+          <View style={styles.imageView}>
+            <TouchableOpacity>
+              <Image source={imgRain} style={styles.image}></Image>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Image source={imgStones} style={styles.image}></Image>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.textView}>
+            <Text style={styles.text2}>Chuva</Text>
+            <Text style={styles.text2}>Natureza</Text>
+          </View>
+        </View>
+
+        <TouchableOpacity>
+          <RobotIcon name="robot" style={styles.icon} />
+        </TouchableOpacity>
+      </ImageBackground>
+      <StatusBar style="default" />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
