@@ -16,6 +16,7 @@ import DropShadow from "react-native-drop-shadow";
 import { LinearGradient } from "expo-linear-gradient";
 import { TextInput } from "react-native-paper";
 import Storage from "@react-native-async-storage/async-storage";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function TelaLogin({ navigation }) {
   const [email, setEmail] = useState("");
@@ -29,14 +30,17 @@ export default function TelaLogin({ navigation }) {
   };
 
   return (
-    <LinearGradient
-      start={{ x: 0.5, y: 0 }}
-      end={{ x: 0.5, y: 1 }}
-      colors={["#d574fc", "#efcdfd"]}
-      style={{ flex: 1 }}
-    >
-      <Text>Login</Text>
-      {/* <Button
+    <>
+      <StatusBar barStyle="dark-content" />
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#9C51B6" }}>
+        <LinearGradient
+          start={{ x: 0.5, y: 0 }}
+          end={{ x: 0.5, y: 1 }}
+          colors={["#d574fc", "#efcdfd"]}
+          style={{ flex: 1 }}
+        >
+          <Text>Login</Text>
+          {/* <Button
         title="Gravar"
         onPress={() => {
           Storage.setItem("usuario", "Nome do Usuario");
@@ -54,11 +58,20 @@ export default function TelaLogin({ navigation }) {
             });
         }}
       /> */}
-      <TextInput placeholder="E-mail" value={email} onChangeText={setEmail} />
-      <TextInput placeholder="Senha" value={senha} onChangeText={setSenha} />
-      <Button title="login" onPress={() => entrar()} />
-      <StatusBar style="default" />
-    </LinearGradient>
+          <TextInput
+            placeholder="E-mail"
+            value={email}
+            onChangeText={setEmail}
+          />
+          <TextInput
+            placeholder="Senha"
+            value={senha}
+            onChangeText={setSenha}
+          />
+          <Button title="login" onPress={() => entrar()} />
+        </LinearGradient>
+      </SafeAreaView>
+    </>
   );
 }
 
