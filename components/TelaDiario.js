@@ -140,15 +140,13 @@ export default function TelaDiario() {
   return (
     <View style={styles.container}>
       <ImageBackground source={bgimg} style={styles.imgBackground}>
-        <Text style={styles.titulo}> Diário </Text>
-
         <TouchableOpacity
           style={styles.buttonNovo}
           //onPress={onPressDiario}
           //onPress={() => setPopup(<TelaModal />)}
           onPress={() => setVisivel(true)}
         >
-          <Icon name="plus" size={24} />
+          <Text style={{ color: "#0353a2", fontSize: 14 }}>Novo Diário</Text>
         </TouchableOpacity>
 
         <FlatList
@@ -159,7 +157,10 @@ export default function TelaDiario() {
           style={{ flex: 1 }}
         />
 
-        <TouchableOpacity onPress={() => setVisivelChatbot(true)}>
+        <TouchableOpacity
+          onPress={() => setVisivelChatbot(true)}
+          style={styles.btnRobot}
+        >
           <RobotIcon name="robot" style={styles.icon} />
         </TouchableOpacity>
       </ImageBackground>
@@ -270,26 +271,43 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   buttonNovo: {
+    marginTop: 10,
     alignItems: "center",
-    justifyContent: "center",
-    width: 50,
-    height: 50,
     backgroundColor: "#92cbde",
-    borderRadius: 50,
-    marginLeft: 300,
+    padding: 10,
+    borderRadius: 20,
+    marginLeft: 200,
     marginRight: 40,
     marginBottom: 15,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 3.84,
+    elevation: 1,
   },
   icon: {
-    color: "#4da6ff",
+    color: "#0353a2",
     fontSize: 24,
-    marginVertical: 10,
-    marginLeft: 30,
   },
   viewModal: {
     position: "absolute",
     flex: 1,
     padding: 30,
     backgroundColor: "#92cbde",
+  },
+  btnRobot: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: 50,
+    height: 50,
+    backgroundColor: "#92cbde",
+    borderRadius: 50,
+    marginRight: 40,
+    marginBottom: 15,
+    marginLeft: 10,
+    opacity: 0.4,
   },
 });
