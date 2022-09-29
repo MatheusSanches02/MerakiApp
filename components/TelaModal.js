@@ -23,7 +23,7 @@ export default function TelaModal({ setPopup }) {
     <View style={styles.container}>
       
       <ImageBackground source={bgimg} style={styles.imgBackground}>
-        <Text> Diario </Text>
+        <Text> Tem certeza que deseja excluir? </Text>
         <Button
           title="Voltar"
           onPress={() => {

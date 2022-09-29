@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Modal,
   Button,
+  FlatList,
 } from "react-native";
 import { TextInput } from "react-native-paper";
 
@@ -18,12 +19,124 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 //uigradients.com
 import bgimg from "../assets/backgroundImages/Telegram.jpg";
 import TelaModal from "./TelaModal";
+import Storage from "@react-native-async-storage/async-storage";
+
+//secureTextEntry
+
+function Item(props) {
+  return (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#e8e8e8",
+        marginHorizontal: 10,
+        marginVertical: 5,
+        paddingHorizontal: 20,
+        padding: 5,
+        justifyContent: "space-between",
+        flexDirection: "row",
+        borderRadius: 10,
+      }}
+    >
+      <View style={{ flex: 1 }}>
+        <Text style={{ fontWeight: "bold", fontSize: 18, color: "black" }}>
+          {"(" + props.item.id + ") " + props.item.titulo}
+        </Text>
+        <Text style={{ fontWeight: "bold", fontSize: 14, color: "gray" }}>
+          {props.item.diario}
+        </Text>
+      </View>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          justifyContent: "space-around",
+          alignItems: "center",
+        }}
+      >
+        <Icon
+          name="pencil-box-outline"
+          size={24}
+          onPress={() => {
+            // alert("Apagar: " + props.item.id);
+            props.onEditar(props.item.id);
+          }}
+        />
+        <Icon
+          name="delete"
+          size={24}
+          onPress={() => {
+            // alert("Apagar: " + props.item.id);
+            props.onApagar(props.item.id);
+          }}
+        />
+      </View>
+    </View>
+  );
+}
 
 export default function TelaDiario() {
   const [visivel, setVisivel] = useState(false);
+  const [visivelChatbot, setVisivelChatbot] = useState(false);
   const [titulo, setTitulo] = useState("");
   const [diario, setDiario] = useState("");
-  const [popup, setPopup] = useState();
+  //const [popup, setPopup] = useState();
+  const [listaDiario, setListaDiario] = useState([]);
+  const [id, setId] = useState(null);
+  const [counter, setCounter] = useState(1);
+  //const [visivelExcluir, setVisivelExcluir] = useState(false);
+
+  function apagar(id) {
+    const tempLista = [...listaDiario];
+    for (let i = 0; i < tempLista.length; i++) {
+      const o = tempLista[i];
+      if (o.id === id) {
+        tempLista.splice(i, 1);
+        setListaDiario(tempLista);
+        break;
+      }
+    }
+    alert("Diário excluido com sucesso");
+  }
+
+  function editar(id) {
+    setVisivel(true);
+    const tempLista = [...listaDiario];
+    for (let i = 0; i < tempLista.length; i++) {
+      const o = tempLista[i];
+      if (o.id === id) {
+        setId(o.id);
+        setTitulo(o.titulo);
+        setDiario(o.diario);
+      }
+    }
+  }
+
+  function salvar() {
+    if (id === null) {
+      setListaDiario([...listaDiario, { id: counter, titulo, diario }]);
+      setCounter(counter + 1);
+      alert(`Diário com titulo ${titulo} salvo com sucesso`);
+      setTitulo("");
+      setDiario("");
+      setId(null);
+    } else {
+      const tempLista = [...listaDiario];
+      for (let i = 0; i < tempLista.length; i++) {
+        const o = tempLista[i];
+        if (o.id === id) {
+          const novoObj = { id, titulo, diario };
+          tempLista.splice(i, 1, novoObj);
+          setListaDiario(tempLista);
+          setTitulo("");
+          setDiario("");
+          setId(null);
+          break;
+        }
+      }
+    }
+  }
+
   return (
     <View style={styles.container}>
       <ImageBackground source={bgimg} style={styles.imgBackground}>
@@ -38,20 +151,15 @@ export default function TelaDiario() {
           <Icon name="plus" size={24} />
         </TouchableOpacity>
 
-        <View style={styles.containerImg}>
-          <View style={styles.item}>
-            <Text>diario1</Text>
-          </View>
-          <View style={styles.item}>
-            <Text>diario2</Text>
-          </View>
+        <FlatList
+          data={listaDiario}
+          renderItem={(properties) => (
+            <Item {...properties} onApagar={apagar} onEditar={editar} />
+          )}
+          style={{ flex: 1 }}
+        />
 
-          <View style={styles.item}>
-            <Text>diario3</Text>
-          </View>
-        </View>
-
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setVisivelChatbot(true)}>
           <RobotIcon name="robot" style={styles.icon} />
         </TouchableOpacity>
       </ImageBackground>
@@ -61,6 +169,8 @@ export default function TelaDiario() {
             style={{ fontSize: 28, marginBottom: 15, width: 150 }}
             placeholder="Titulo"
             placeholderTextColor="#4da6ff"
+            value={titulo}
+            onChangeText={setTitulo}
           />
           <TextInput
             multiline
@@ -70,6 +180,8 @@ export default function TelaDiario() {
               borderColor: "none",
               flex: 1,
             }}
+            value={diario}
+            onChangeText={setDiario}
           />
           <View
             style={{
@@ -78,7 +190,13 @@ export default function TelaDiario() {
               marginTop: 50,
             }}
           >
-            <Button title="Salvar" onPress={() => {}} />
+            <Button
+              title="Salvar"
+              onPress={() => {
+                salvar();
+                setVisivel(false);
+              }}
+            />
             <Button
               title="Cancelar"
               onPress={() => {
@@ -88,6 +206,29 @@ export default function TelaDiario() {
           </View>
         </View>
       </Modal>
+      <Modal visible={visivelChatbot}>
+        <View style={[styles.viewModal]}>
+          <Text style={{ width: 350 }}>Chatbot</Text>
+          <Button
+            title="Cancelar"
+            onPress={() => {
+              setVisivelChatbot(false);
+            }}
+          />
+        </View>
+      </Modal>
+      {/* <Modal visible={visivelExcluir}>
+        <View style={[styles.viewModal]}>
+          <Text style={{ width: 350 }}>Tem certeza que deseja excluir?</Text>
+          <Button
+            title="Cancelar"
+            onPress={() => {
+              setVisivelExcluir(false);
+            }}
+          />
+          <Button title="Excluir" onPress={apagar(id)} />
+        </View>
+      </Modal> */}
       <StatusBar barStyle="light-content" />
     </View>
   );
