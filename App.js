@@ -6,6 +6,7 @@ import MyScreen from "./components/AssetExample";
 import TelaMeditacao from "./components/TelaMeditacao";
 import TelaDiario from "./components/TelaDiario";
 import TelaLogin from "./components/TelaLogin";
+import TelaChatbot from "./components/TelaChatbot";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -23,6 +24,7 @@ function Tabs() {
           const icons = {
             Diário: "text-box-multiple-outline",
             Respirar: "weather-windy",
+            ChatBot: "robot",
             Relaxar: "meditation",
             Conta: "account-circle-outline",
           };
@@ -39,6 +41,7 @@ function Tabs() {
     >
       <Tab.Screen name="Diário" component={TelaDiario} />
       <Tab.Screen name="Respirar" component={MyScreen} />
+      <Tab.Screen name="ChatBot" component={TelaChatbot} />
       <Tab.Screen name="Relaxar" component={TelaMeditacao} />
       <Tab.Screen name="Conta" component={MyScreen} />
     </Tab.Navigator>
