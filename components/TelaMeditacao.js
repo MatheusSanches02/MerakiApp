@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import {
   Text,
   View,
@@ -20,20 +20,28 @@ import imgWaves from "../assets/images/waves.jpg";
 import imgFireplace from "../assets/images/fireplace.jpg";
 import imgRain from "../assets/images/rain.jpg";
 import imgStones from "../assets/images/stones.jpg";
+import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 
 export default function TelaMeditacao() {
+  const [reproduzindo, setReproduzindo] = useState(false);
+  const [som, setSom] = useState("");
   return (
     <View style={styles.container}>
       <ImageBackground source={bgimg1} style={styles.imgBackground}>
         <Text style={styles.titulo}> Meditação </Text>
         <View style={styles.containerImg}>
+          {/* <Text
+            style={[styles.titulo, { color: "#eef104", textAlign: "center" }]}
+          >
+            Reproduzindo:
+          </Text> */}
           <View style={styles.imageView}>
-            <TouchableOpacity>
+            <Pressable>
               <Image source={imgWaves} style={styles.image}></Image>
-            </TouchableOpacity>
-            <TouchableOpacity>
+            </Pressable>
+            <Pressable>
               <Image source={imgFireplace} style={styles.image}></Image>
-            </TouchableOpacity>
+            </Pressable>
           </View>
 
           <View style={styles.textView}>
@@ -42,12 +50,12 @@ export default function TelaMeditacao() {
           </View>
 
           <View style={styles.imageView}>
-            <TouchableOpacity>
+            <Pressable>
               <Image source={imgRain} style={styles.image}></Image>
-            </TouchableOpacity>
-            <TouchableOpacity>
+            </Pressable>
+            <Pressable>
               <Image source={imgStones} style={styles.image}></Image>
-            </TouchableOpacity>
+            </Pressable>
           </View>
 
           <View style={styles.textView}>

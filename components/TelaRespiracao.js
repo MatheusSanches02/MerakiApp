@@ -1,4 +1,4 @@
-import { View, Text, Image, Pressable } from "react-native";
+import { View, Text, Image, Pressable, TextInput } from "react-native";
 import { useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -56,10 +56,27 @@ const TelaRespiracao = () => {
               color: "#a95fc9",
             }}
           >
-            Selecione o Tempo para começar o controle!
+            {/* Selecione o Tempo para começar o controle! */}
           </Text>
         </View>
       )}
+      {/* <View
+        style={{
+          width: "100%",
+          borderColor: "#e8e8e8",
+          borderWidth: 1,
+          borderRadius: 5,
+          paddingHorizontal: 10,
+          marginVertical: 5,
+        }}
+      >
+        <TextInput
+          placeholder="Tempo"
+          keyboardType="numeric"
+          value={tempo}
+          onChangeText={setTempo}
+        />
+      </View> */}
 
       <Pressable
         onPress={() => {

@@ -165,7 +165,10 @@ export default function TelaDiario() {
           <RobotIcon name="robot" style={styles.icon} />
         </TouchableOpacity> */}
       </ImageBackground>
-      <Modal visible={visivel}>
+      <Modal
+        visible={visivel}
+        style={{ position: "absolute", backgroundColor: "" }}
+      >
         <View style={styles.viewModal}>
           <TextInput
             style={{ fontSize: 28, marginBottom: 15, width: 150 }}
@@ -287,6 +290,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     flex: 1,
     padding: 30,
+    height: "100%",
+    width: "100%",
     backgroundColor: "#92cbde",
   },
   btnRobot: {

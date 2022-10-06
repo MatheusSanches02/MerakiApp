@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { Button, StyleSheet, Text, View, FlatList } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  ImageBackground,
+  TextInput,
+} from "react-native";
 import { Audio } from "expo-av";
 import * as FileSystem from "expo-file-system";
 import axios from "axios";
@@ -8,6 +16,7 @@ import { Buffer } from "buffer";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { LinearGradient } from "expo-linear-gradient";
+import bgimg from "../assets/backgroundImages/ab.jpg";
 
 const TelaChatbot = () => {
   const [permission, setPermission] = useState("");
@@ -84,41 +93,92 @@ const TelaChatbot = () => {
     sendMessage(resp);
   }
   return (
-    <LinearGradient
-      start={{ x: 0.5, y: 0 }}
-      end={{ x: 0.5, y: 1 }}
-      colors={["#05dfcb", "#bdfcf7"]}
-      style={{ flex: 1 }}
-    >
-      <Text>{permission}</Text>
-      <View
-        style={{
-          borderWidth: 2,
-          width: "70%",
-          height: "30%",
-          flex: 1,
-          marginLeft: "15%",
-        }}
-      >
-        <FlatList
-          data={lista}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => {
-            return <Text>{item.resposta}</Text>;
+    <>
+      <ImageBackground source={bgimg} style={styles.imgBackground}>
+        <Text>{permission}</Text>
+        <View
+          style={{
+            borderWidth: 2,
+            width: "70%",
+            height: "30%",
+            flex: 1,
+            marginLeft: "15%",
+            backgroundColor: "#92cbde",
+            opacity: 0.7,
+            borderRadius: 25,
           }}
-        />
-      </View>
-      <TouchableOpacity onPress={recording ? stopRecording : startRecording}>
-        <Icon
-          name={recording ? "stop-circle-outline" : "microphone"}
-          size={28}
-          color={"black"}
-          style={{ marginLeft: "85%", marginTop: "20%", marginBottom: 15 }}
-        />
-      </TouchableOpacity>
+        >
+          <Text
+            style={{
+              backgroundColor: "white",
+              marginTop: 15,
+              width: "30%",
+              marginLeft: "65%",
+              borderRadius: 10,
+            }}
+          >
+            Oi...
+          </Text>
+          <Text
+            style={{
+              backgroundColor: "white",
+              marginTop: 15,
+              minWidth: "30%",
+              maxWidth: "70%",
+              marginRight: 30,
+              borderRadius: 10,
+            }}
+          >
+            Olá eu sou o MerakiBot e estou pronto para ajudar!
+          </Text>
+          <FlatList
+            data={lista}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => {
+              return <Text>{item.resposta}</Text>;
+            }}
+          />
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-around" }}
+          >
+            <TextInput
+              style={{
+                backgroundColor: "white",
+                marginBottom: 15,
+                width: "70%",
+                alignSelf: "center",
+                borderRadius: 10,
+              }}
+              placeholder="Digite aqui..."
+            />
+            <Icon name="send" size={24} />
+          </View>
+        </View>
+        <TouchableOpacity
+          onPress={recording ? stopRecording : startRecording}
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            width: 50,
+            height: 50,
+            backgroundColor: "#92cbde",
+            borderRadius: 50,
+            marginRight: 40,
+            marginBottom: 15,
+            marginLeft: 10,
+            opacity: 0.4,
+          }}
+        >
+          <Icon
+            name={recording ? "stop-circle-outline" : "microphone"}
+            size={28}
+            color={"black"}
+          />
+        </TouchableOpacity>
 
-      <StatusBar style="auto" />
-    </LinearGradient>
+        <StatusBar style="auto" />
+      </ImageBackground>
+    </>
   );
 };
 
@@ -128,6 +188,9 @@ const styles = StyleSheet.create({
     backgroundColor: "blue",
     alignItems: "center",
     justifyContent: "center",
+  },
+  imgBackground: {
+    flex: 1,
   },
   row: {
     flexDirection: "row",
