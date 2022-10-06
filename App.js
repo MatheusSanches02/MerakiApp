@@ -10,6 +10,7 @@ import TelaChatbot from "./components/TelaChatbot";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import TelaRespiracao from "./components/TelaRespiracao";
 
 //Icon.loadFont();
 
@@ -40,7 +41,7 @@ function Tabs() {
       })}
     >
       <Tab.Screen name="Diário" component={TelaDiario} />
-      <Tab.Screen name="Respirar" component={MyScreen} />
+      <Tab.Screen name="Respirar" component={TelaRespiracao} />
       <Tab.Screen name="ChatBot" component={TelaChatbot} />
       <Tab.Screen name="Relaxar" component={TelaMeditacao} />
       <Tab.Screen name="Conta" component={MyScreen} />
