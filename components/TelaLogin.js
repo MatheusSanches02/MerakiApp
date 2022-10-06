@@ -17,6 +17,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { TextInput } from "react-native-paper";
 import Storage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 
 export default function TelaLogin({ navigation }) {
   const [email, setEmail] = useState("");
@@ -39,7 +40,19 @@ export default function TelaLogin({ navigation }) {
           colors={["#d574fc", "#efcdfd"]}
           style={{ flex: 1 }}
         >
-          <Text>Login</Text>
+          <Text
+            style={{
+              fontSize: 40,
+              fontWeight: "bold",
+              fontFamily: "sans-serif",
+              color: "#f0edf0",
+              textAlign: "center",
+              marginTop: "30%",
+              marginBottom: "15%",
+            }}
+          >
+            Login
+          </Text>
           {/* <Button
         title="Gravar"
         onPress={() => {
@@ -58,17 +71,52 @@ export default function TelaLogin({ navigation }) {
             });
         }}
       /> */}
-          <TextInput
-            placeholder="E-mail"
-            value={email}
-            onChangeText={setEmail}
-          />
-          <TextInput
-            placeholder="Senha"
-            value={senha}
-            onChangeText={setSenha}
-          />
-          <Button title="login" onPress={() => entrar()} />
+          <View
+            style={{
+              width: "100%",
+              borderColor: "#e8e8e8",
+              borderWidth: 1,
+              borderRadius: 5,
+              paddingHorizontal: 10,
+              marginVertical: 5,
+            }}
+          >
+            <TextInput
+              placeholder="E-mail"
+              value={email}
+              onChangeText={setEmail}
+            />
+          </View>
+          <View
+            style={{
+              width: "100%",
+              borderColor: "#e8e8e8",
+              borderWidth: 1,
+              borderRadius: 5,
+              paddingHorizontal: 10,
+              marginVertical: 5,
+            }}
+          >
+            <TextInput
+              placeholder="Senha"
+              value={senha}
+              onChangeText={setSenha}
+            />
+          </View>
+
+          <Pressable
+            style={{
+              width: "100%",
+              padding: 15,
+              marginVertical: 5,
+              alignItems: "center",
+              borderRadius: 5,
+              backgroundColor: "#3B71F3",
+            }}
+            onPress={() => entrar()}
+          >
+            <Text style={{ fontWeight: "bold", color: "white" }}>Entrar</Text>
+          </Pressable>
         </LinearGradient>
       </SafeAreaView>
     </>

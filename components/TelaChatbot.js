@@ -1,14 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View, FlatList } from "react-native";
 import { Audio } from "expo-av";
 import * as FileSystem from "expo-file-system";
 import axios from "axios";
 import { Buffer } from "buffer";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { LinearGradient } from "expo-linear-gradient";
 
 const TelaChatbot = () => {
-  const [permission, setPermission] = React.useState("");
-  const [recording, setRecording] = React.useState("");
+  const [permission, setPermission] = useState("");
+  const [recording, setRecording] = useState("");
+  const [resposta, setResposta] = useState("");
+  const [lista, setLista] = useState([]);
+  const [counter, setCounter] = useState(1);
+  const [id, setId] = useState(null);
+
+  useEffect(() => {}, []);
 
   const sendMessage = (recording) => {
     const formData = new FormData();
@@ -30,6 +39,10 @@ const TelaChatbot = () => {
         }
       )
       .then(async function (response) {
+        setResposta(response.data);
+        setLista([...lista, { id: counter, resposta: response.data }]);
+        setCounter(counter + 1);
+        setId(null);
         console.log(response.data);
       })
       .catch(function (error) {
@@ -71,21 +84,48 @@ const TelaChatbot = () => {
     sendMessage(resp);
   }
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      start={{ x: 0.5, y: 0 }}
+      end={{ x: 0.5, y: 1 }}
+      colors={["#05dfcb", "#bdfcf7"]}
+      style={{ flex: 1 }}
+    >
       <Text>{permission}</Text>
-      <Button
-        title={recording ? "Stop Recording" : "Start Recording"}
-        onPress={recording ? stopRecording : startRecording}
-      />
+      <View
+        style={{
+          borderWidth: 2,
+          width: "70%",
+          height: "30%",
+          flex: 1,
+          marginLeft: "15%",
+        }}
+      >
+        <FlatList
+          data={lista}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => {
+            return <Text>{item.resposta}</Text>;
+          }}
+        />
+      </View>
+      <TouchableOpacity onPress={recording ? stopRecording : startRecording}>
+        <Icon
+          name={recording ? "stop-circle-outline" : "microphone"}
+          size={28}
+          color={"black"}
+          style={{ marginLeft: "85%", marginTop: "20%", marginBottom: 15 }}
+        />
+      </TouchableOpacity>
+
       <StatusBar style="auto" />
-    </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "blue",
     alignItems: "center",
     justifyContent: "center",
   },

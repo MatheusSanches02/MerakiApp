@@ -55,10 +55,6 @@ export default function TelaMeditacao() {
             <Text style={styles.text2}>Natureza</Text>
           </View>
         </View>
-
-        <TouchableOpacity>
-          <RobotIcon name="robot" style={styles.icon} />
-        </TouchableOpacity>
       </ImageBackground>
       <StatusBar style="default" />
     </View>
@@ -109,7 +105,6 @@ const styles = StyleSheet.create({
     marginLeft: 50,
     marginRight: 50,
     color: "#a38572",
-    fontFamily: "cursive",
     fontSize: 15,
   },
   text2: {
@@ -117,7 +112,6 @@ const styles = StyleSheet.create({
     marginLeft: 55,
     marginRight: 40,
     color: "#a38572",
-    fontFamily: "cursive",
     fontSize: 15,
   },
   icon: {

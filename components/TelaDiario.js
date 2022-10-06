@@ -20,6 +20,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import bgimg from "../assets/backgroundImages/Telegram.jpg";
 import TelaModal from "./TelaModal";
 import Storage from "@react-native-async-storage/async-storage";
+import TelaChatbot from "./TelaChatbot";
 
 //secureTextEntry
 
@@ -77,7 +78,7 @@ function Item(props) {
 
 export default function TelaDiario() {
   const [visivel, setVisivel] = useState(false);
-  const [visivelChatbot, setVisivelChatbot] = useState(false);
+  //const [visivelChatbot, setVisivelChatbot] = useState(false);
   const [titulo, setTitulo] = useState("");
   const [diario, setDiario] = useState("");
   //const [popup, setPopup] = useState();
@@ -157,12 +158,12 @@ export default function TelaDiario() {
           style={{ flex: 1 }}
         />
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => setVisivelChatbot(true)}
           style={styles.btnRobot}
         >
           <RobotIcon name="robot" style={styles.icon} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </ImageBackground>
       <Modal visible={visivel}>
         <View style={styles.viewModal}>
@@ -207,17 +208,7 @@ export default function TelaDiario() {
           </View>
         </View>
       </Modal>
-      <Modal visible={visivelChatbot}>
-        <View style={[styles.viewModal]}>
-          <Text style={{ width: 350 }}>Chatbot</Text>
-          <Button
-            title="Cancelar"
-            onPress={() => {
-              setVisivelChatbot(false);
-            }}
-          />
-        </View>
-      </Modal>
+
       {/* <Modal visible={visivelExcluir}>
         <View style={[styles.viewModal]}>
           <Text style={{ width: 350 }}>Tem certeza que deseja excluir?</Text>
