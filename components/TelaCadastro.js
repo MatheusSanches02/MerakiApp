@@ -10,6 +10,8 @@ import {
   Button,
 } from "react-native";
 
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+
 import RobotIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import DropShadow from "react-native-drop-shadow";
@@ -23,28 +25,10 @@ export default function TelaLogin({ navigation }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
-  const emailCerto = "matheus@email.com";
-  const emailCerto1 = "dani@email.com";
-  const senhaCerta = 1234;
-
-  const entrar = () => {
-    if (
-      (email === emailCerto && senha == senhaCerta) ||
-      (email === emailCerto1 && senha == senhaCerta)
-    ) {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Diário" }],
-      });
-    } else {
-      alert("Usuário não encontrado");
-    }
-  };
-
   const cadastrar = () => {
     navigation.reset({
       index: 0,
-      routes: [{ name: "Cadastro" }],
+      routes: [{ name: "Login" }],
     });
   };
 
@@ -58,6 +42,19 @@ export default function TelaLogin({ navigation }) {
           colors={["#d574fc", "#efcdfd"]}
           style={{ flex: 1 }}
         >
+          <Pressable
+            style={{
+              marginTop: "10%",
+              marginLeft: "10%",
+              borderRadius: 50,
+              width: 50,
+              alignItems: "center",
+              backgroundColor: "white",
+            }}
+            onPress={() => cadastrar()}
+          >
+            <Icon name="keyboard-backspace" size={24} />
+          </Pressable>
           <Text
             style={{
               fontSize: 40,
@@ -69,7 +66,7 @@ export default function TelaLogin({ navigation }) {
               marginBottom: "15%",
             }}
           >
-            Login
+            Cadastro
           </Text>
           {/* <Button
         title="Gravar"
@@ -119,7 +116,6 @@ export default function TelaLogin({ navigation }) {
               placeholder="Senha"
               value={senha}
               onChangeText={setSenha}
-              secureTextEntry={true}
             />
           </View>
 
@@ -132,16 +128,10 @@ export default function TelaLogin({ navigation }) {
               borderRadius: 5,
               backgroundColor: "#3B71F3",
             }}
-            onPress={() => entrar()}
-          >
-            <Text style={{ fontWeight: "bold", color: "white" }}>Entrar</Text>
-          </Pressable>
-          <Pressable
-            style={{ alignItems: "center", marginTop: "10%" }}
             onPress={() => cadastrar()}
           >
-            <Text style={{ fontWeight: "bold", color: "white", fontSize: 18 }}>
-              Não tem cadastro? Cadastrar
+            <Text style={{ fontWeight: "bold", color: "white" }}>
+              Cadastrar
             </Text>
           </Pressable>
         </LinearGradient>

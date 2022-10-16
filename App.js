@@ -11,6 +11,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import TelaRespiracao from "./components/TelaRespiracao";
+import TelaCadastro from "./components/TelaCadastro";
 
 //Icon.loadFont();
 
@@ -61,6 +62,11 @@ export default function App() {
         <Stack.Screen
           name="Login"
           component={TelaLogin}
+          options={{ headerShown: false }}
+        ></Stack.Screen>
+        <Stack.Screen
+          name="Cadastro"
+          component={TelaCadastro}
           options={{ headerShown: false }}
         ></Stack.Screen>
         <Stack.Screen
