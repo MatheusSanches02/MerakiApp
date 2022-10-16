@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
-  Button,
   StyleSheet,
   Text,
   View,
@@ -10,13 +9,12 @@ import {
   TextInput,
 } from "react-native";
 import { Audio } from "expo-av";
-import * as FileSystem from "expo-file-system";
 import axios from "axios";
-import { Buffer } from "buffer";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { LinearGradient } from "expo-linear-gradient";
 import bgimg from "../assets/backgroundImages/ab.jpg";
+import base64 from "react-native-base64";
+import * as Speech from "expo-speech";
 
 const TelaChatbot = () => {
   const [permission, setPermission] = useState("");
@@ -25,10 +23,73 @@ const TelaChatbot = () => {
   const [lista, setLista] = useState([]);
   const [counter, setCounter] = useState(1);
   const [id, setId] = useState(null);
+  const { CHATBOT_KEY } = process.env;
+  const key = CHATBOT_KEY;
+  const encodedKey = base64.encode(`apikey:${key}`);
+  const [chatMessage, setChatMessage] = useState([]);
+  const [message, setMessage] = useState("");
+  let [context, setContext] = useState("");
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    axios
+      .post(
+        `https://api.us-south.assistant.watson.cloud.ibm.com/instances/661be620-d5f6-47f9-8b84-8d439a959e5a/v1/workspaces/e1fa47ac-f4a0-4760-9ec7-7aece31f1de6/message?version=2018-09-20`,
+        {
+          input: { text: message },
+        },
+        {
+          headers: {
+            Authorization: `Basic ${encodedKey}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        setContext(res.data.context);
+        setChatMessage(res.data.output.text);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
-  const sendMessage = (recording) => {
+  useEffect(() => {
+    if (chatMessage.length > 1) {
+      chatMessage.map((value) => {
+        Speech.speak(value, { language: "pt-BR" });
+      });
+    } else {
+      if (chatMessage[0] != null) {
+        Speech.speak(chatMessage[0], { language: "pt-BR" });
+      }
+    }
+  }, [chatMessage]);
+
+  const sendMessage = (messageUser) => {
+    axios
+      .post(
+        `https://api.us-south.assistant.watson.cloud.ibm.com/instances/661be620-d5f6-47f9-8b84-8d439a959e5a/v1/workspaces/e1fa47ac-f4a0-4760-9ec7-7aece31f1de6/message?version=2018-09-20`,
+        {
+          input: { text: messageUser },
+          context,
+        },
+        {
+          headers: {
+            Authorization: `Basic ${encodedKey}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        setContext(res.data.context);
+        setChatMessage(res.data.output.text);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const userMessage = (recording) => {
     const formData = new FormData();
     formData.append("file", {
       uri: recording.getURI(),
@@ -48,6 +109,7 @@ const TelaChatbot = () => {
         }
       )
       .then(async function (response) {
+        sendMessage(response.data);
         setResposta(response.data);
         setLista([...lista, { id: counter, resposta: response.data }]);
         setCounter(counter + 1);
@@ -90,7 +152,7 @@ const TelaChatbot = () => {
     await recording.stopAndUnloadAsync();
     let resp = recording;
     setRecording(undefined);
-    sendMessage(resp);
+    userMessage(resp);
   }
   return (
     <>
@@ -112,12 +174,13 @@ const TelaChatbot = () => {
             style={{
               backgroundColor: "white",
               marginTop: 15,
-              width: "30%",
-              marginLeft: "65%",
+              minWidth: "30%",
+              maxWidth: "70%",
+              marginRight: 30,
               borderRadius: 10,
             }}
           >
-            Oi...
+            {chatMessage}
           </Text>
           <Text
             style={{
@@ -125,11 +188,11 @@ const TelaChatbot = () => {
               marginTop: 15,
               minWidth: "30%",
               maxWidth: "70%",
-              marginRight: 30,
+              marginLeft: "65%",
               borderRadius: 10,
             }}
           >
-            Olá eu sou o MerakiBot e estou pronto para ajudar!
+            {resposta}
           </Text>
           <FlatList
             data={lista}
@@ -154,6 +217,7 @@ const TelaChatbot = () => {
             <Icon name="send" size={24} />
           </View>
         </View>
+
         <TouchableOpacity
           onPress={recording ? stopRecording : startRecording}
           style={{
