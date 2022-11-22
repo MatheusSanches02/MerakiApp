@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -22,7 +22,14 @@ import TelaModal from "./TelaModal";
 import Storage from "@react-native-async-storage/async-storage";
 import TelaChatbot from "./TelaChatbot";
 
+import axios from "axios";
+import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
+
 //secureTextEntry
+
+const api = axios.create({
+  baseURL: "https://merakiapp-2b066-default-rtdb.firebaseio.com/",
+});
 
 function Item(props) {
   return (
@@ -41,7 +48,7 @@ function Item(props) {
     >
       <View style={{ flex: 1 }}>
         <Text style={{ fontWeight: "bold", fontSize: 18, color: "black" }}>
-          {"(" + props.item.id + ") " + props.item.titulo}
+          {props.item.titulo}
         </Text>
         <Text style={{ fontWeight: "bold", fontSize: 14, color: "gray" }}>
           {props.item.diario}
@@ -87,56 +94,123 @@ export default function TelaDiario() {
   const [counter, setCounter] = useState(1);
   //const [visivelExcluir, setVisivelExcluir] = useState(false);
 
-  function apagar(id) {
-    const tempLista = [...listaDiario];
-    for (let i = 0; i < tempLista.length; i++) {
-      const o = tempLista[i];
-      if (o.id === id) {
-        tempLista.splice(i, 1);
-        setListaDiario(tempLista);
-        break;
-      }
-    }
-    alert("Diário excluido com sucesso");
-  }
+  const atualizarLista = () => {
+    api
+      .get("/diario.json")
+      .then((info) => {
+        setListaDiario(info.data);
+      })
+      .catch((err) => {
+        alert("Erro: " + err);
+      });
+  };
 
-  function editar(id) {
-    setVisivel(true);
-    const tempLista = [...listaDiario];
-    for (let i = 0; i < tempLista.length; i++) {
-      const o = tempLista[i];
-      if (o.id === id) {
-        setId(o.id);
-        setTitulo(o.titulo);
-        setDiario(o.diario);
-      }
-    }
-  }
+  const apagar = (obj) => {
+    api
+      .delete("/diario.json" + obj.id)
+      .then((info) => {
+        atualizarLista();
+        setId(null);
+        setTitulo("");
+        setDiario("");
+      })
+      .catch((err) => {
+        alert("Erro ao remover");
+      });
+  };
 
-  function salvar() {
+  const editar = (obj) => {
+    setId(obj.id);
+    setTitulo(obj.titulo);
+    setDiario(obj.diario);
+  };
+
+  // function apagar(id) {
+  //   const tempLista = [...listaDiario];
+  //   for (let i = 0; i < tempLista.length; i++) {
+  //     const o = tempLista[i];
+  //     if (o.id === id) {
+  //       tempLista.splice(i, 1);
+  //       setListaDiario(tempLista);
+  //       break;
+  //     }
+  //   }
+  //   alert("Diário excluido com sucesso");
+  // }
+
+  // function editar(id) {
+  //   setVisivel(true);
+  //   const tempLista = [...listaDiario];
+  //   for (let i = 0; i < tempLista.length; i++) {
+  //     const o = tempLista[i];
+  //     if (o.id === id) {
+  //       setId(o.id);
+  //       setTitulo(o.titulo);
+  //       setDiario(o.diario);
+  //     }
+  //   }
+  // }
+
+  const salvar = () => {
     if (id === null) {
-      setListaDiario([...listaDiario, { id: counter, titulo, diario }]);
-      setCounter(counter + 1);
-      alert(`Diário com titulo ${titulo} salvo com sucesso`);
-      setTitulo("");
-      setDiario("");
-      setId(null);
+      api
+        .post("/diario.json", { id, titulo, diario })
+        .then((info) => {
+          atualizarLista();
+        })
+        .catch((err) => {
+          alert("Deu problema na execução");
+        });
     } else {
-      const tempLista = [...listaDiario];
-      for (let i = 0; i < tempLista.length; i++) {
-        const o = tempLista[i];
-        if (o.id === id) {
-          const novoObj = { id, titulo, diario };
-          tempLista.splice(i, 1, novoObj);
-          setListaDiario(tempLista);
+      api
+        .patch("/diario.json", { id, titulo, diario })
+        .then((info) => {
+          atualizarLista();
+          setId(null);
           setTitulo("");
           setDiario("");
-          setId(null);
-          break;
-        }
-      }
+        })
+        .catch((err) => {
+          alert("Erro ao atualizar");
+        });
     }
-  }
+  };
+
+  // function salvar() {
+  //   if (id === null) {
+  //     setListaDiario([...listaDiario, { id: counter, titulo, diario }]);
+  //     setCounter(counter + 1);
+  //     alert(`Diário com titulo ${titulo} salvo com sucesso`);
+  //     setTitulo("");
+  //     setDiario("");
+  //     setId(null);
+  //   } else {
+  //     const tempLista = [...listaDiario];
+  //     for (let i = 0; i < tempLista.length; i++) {
+  //       const o = tempLista[i];
+  //       if (o.id === id) {
+  //         const novoObj = { id, titulo, diario };
+  //         tempLista.splice(i, 1, novoObj);
+  //         setListaDiario(tempLista);
+  //         setTitulo("");
+  //         setDiario("");
+  //         setId(null);
+  //         break;
+  //       }
+  //     }
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   api
+  //     .get("/diario.json")
+  //     .then((info) => {
+  //       setListaDiario(info.data);
+  //     })
+  //     .catch((err) => {
+  //       alert("Erro: " + err);
+  //     });
+  // }, []);
 
   return (
     <View style={styles.container}>
@@ -149,6 +223,17 @@ export default function TelaDiario() {
         >
           <Text style={{ color: "#0353a2", fontSize: 14 }}>Novo Diário</Text>
         </TouchableOpacity>
+
+        <Pressable
+          style={{ alignItems: "center", marginTop: "10%" }}
+          onPress={() => {
+            atualizarLista();
+          }}
+        >
+          <Text style={{ fontWeight: "bold", color: "white", fontSize: 18 }}>
+            Histórico de diários
+          </Text>
+        </Pressable>
 
         <FlatList
           data={listaDiario}

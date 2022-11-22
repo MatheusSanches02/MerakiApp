@@ -21,40 +21,20 @@ import imgFireplace from "../assets/images/fireplace.jpg";
 import imgRain from "../assets/images/rain.jpg";
 import imgStones from "../assets/images/stones.jpg";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
-import Sound from "react-native-sound";
 
 export default function TelaMeditacao() {
-  const [reproduzindo, setReproduzindo] = useState(false);
-  const [som, setSom] = useState("");
-
-  Sound.setCategory("Playback");
-  var ding = new Sound("ding.mp3", Sound.MAIN_BUNDLE, (error) => {
-    if (error) {
-      console.log("failed to load the sound", error);
-      return;
-    }
-    // when loaded successfully
-    console.log(
-      "duration in seconds: " +
-        whoosh.getDuration() +
-        "number of channels: " +
-        whoosh.getNumberOfChannels()
-    );
-  });
   return (
     <View style={styles.container}>
       <ImageBackground source={bgimg1} style={styles.imgBackground}>
         <Text style={styles.titulo}> Meditação </Text>
         <View style={styles.containerImg}>
-          <Pressable></Pressable>
-
           {/* <Text
             style={[styles.titulo, { color: "#eef104", textAlign: "center" }]}
           >
             Reproduzindo:
           </Text> */}
           <View style={styles.imageView}>
-            <Pressable>
+            <Pressable onPress={() => {}}>
               <Image source={imgWaves} style={styles.image}></Image>
             </Pressable>
             <Pressable>
